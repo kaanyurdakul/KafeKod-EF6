@@ -20,7 +20,7 @@ namespace KafeKod
             db = kafeVeri;
             InitializeComponent();
             dgvUrunler.AutoGenerateColumns = false;
-            dgvUrunler.DataSource = db.Urunler.OrderBy(x => x.UrunAd).ToList();
+            dgvUrunler.DataSource = new BindingSource(db.Urunler.OrderBy(x => x.UrunAd).ToList(), null);
         }
 
         private void btnEkle_Click(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace KafeKod
             });
             db.SaveChanges();
 
-            dgvUrunler.DataSource = db.Urunler.OrderBy(x => x.UrunAd).ToList();
+            dgvUrunler.DataSource = new BindingSource(db.Urunler.OrderBy(x => x.UrunAd).ToList(), null);
         }
 
         // https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/handling-errors-that-occur-during-data-entry-in-the-datagrid#creating-the-form
@@ -65,6 +65,31 @@ namespace KafeKod
                     db.SaveChanges();
                 }
             }
+        }
+
+        private void dgvUrunler_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            Urun urun = (Urun)e.Row.DataBoundItem;
+            
+            if(urun.SiparisDetaylar.Count > 0)
+            {
+                MessageBox.Show("Bu ürün geçmiş siparişlerle ilişkili olduğu için silinemez.");
+                e.Cancel = true;
+                return;
+            }
+
+            db.Urunler.Remove(urun);
+            db.SaveChanges();
+        }
+
+        private void dgvUrunler_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            db.SaveChanges();
+        }
+
+        private void UrunlerForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            txtUrunAd.Focus();
         }
     }
 }

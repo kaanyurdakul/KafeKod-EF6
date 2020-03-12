@@ -27,7 +27,7 @@ namespace KafeKod
             MasaNolariYukle();
             MasaNoGuncelle();
             TutarGuncelle();
-            cboUrun.DataSource = db.Urunler.ToList();
+            cboUrun.DataSource = db.Urunler.Where(x => !x.StoktaYok).ToList();
             // cboUrun.SelectedItem = null;
             dgvSiparisDetaylari.DataSource = siparis.SiparisDetaylar;
         }
@@ -77,7 +77,12 @@ namespace KafeKod
             };
             siparis.SiparisDetaylar.Add(sd);
             db.SaveChanges();
-            dgvSiparisDetaylari.DataSource = new BindingSource(siparis.SiparisDetaylar, null);
+
+            //Bu kodlarla çalıştığımızda sistemde datagridview'e ürün eklendiğinde ilk ürünün index'i -1 gözüküyor 
+            //dgvSiparisDetaylari.DataSource = null;
+            //dgvSiparisDetaylari.DataSource = siparis.SiparisDetaylar;
+
+            dgvSiparisDetaylari.DataSource = new BindingSource(siparis.SiparisDetaylar, null); 
             cboUrun.SelectedIndex = 0;
             nudAdet.Value = 1;
             TutarGuncelle();

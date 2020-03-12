@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace KafeKod.Data
 {
     [Table("Urunler")]
-    public class Urun 
+    public class Urun
     {
         public int Id { get; set; }
 
@@ -18,7 +18,9 @@ namespace KafeKod.Data
 
         public decimal BirimFiyat { get; set; }
 
+
         public virtual List<SiparisDetay> SiparisDetaylar { get; set; }
+
         public override string ToString()
         {
             return string.Format("{0} - {1:0.00}₺", UrunAd, BirimFiyat);

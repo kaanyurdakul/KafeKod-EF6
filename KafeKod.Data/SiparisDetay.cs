@@ -24,12 +24,8 @@ namespace KafeKod.Data
 
         public int SiparisId { get; set; }
 
-        public virtual Urun Urun { get; set; } 
-        // Bir urunun birden çok sipariş detayı olabilir.
-        // Bire çok.
-        // İlişkiyi anlaması için ekledik.
 
-        public virtual Siparis Siparis { get; set; } // Urun ile aynı şekilde.
-
+        public virtual Urun Urun { get; set; }
+        public virtual Siparis Siparis { get; set; }
     }
 }
